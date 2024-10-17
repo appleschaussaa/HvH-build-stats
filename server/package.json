@@ -1,0 +1,10 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "nodemon server.js",
+    "build": "echo \"No build step for server\"",
+    "start": "node server.js"
+  }
+}

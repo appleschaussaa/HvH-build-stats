@@ -1,0 +1,58 @@
+{
+  "name": "hvh-build-stats",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/appleschaussaa/HvH-build-stats.git"
+  },
+  "author": "appleschaussaa",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/appleschaussaa/HvH-build-stats/issues"
+  },
+  "scripts": {
+    "dev": "concurrently \"npm run client:dev\" \"npm run server:dev\"",
+    "build": "npm run client:build && npm run server:build",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "client:dev": "vite",
+    "client:build": "vite build",
+    "prev": "vite preview",
+    "server:dev": "nodemon server/server.js",
+    "server:build": "echo 'No build step for server'",
+    "start": "concurrently \"npm run client:start\" \"npm run server:start\"",
+    "client:start": "vite preview",
+    "server:start": "cross-env NODE_ENV=production node server/server.js"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.11.8",
+    "@apollo/server": "^4.11.0",
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@fontsource/roboto": "^5.1.0",
+    "@mui/icons-material": "^6.1.1",
+    "@mui/material": "^6.1.1",
+    "axios": "^1.7.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "graphql": "^16.9.0",
+    "mongoose": "^8.7.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.2"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.43",
+    "@types/react-dom": "^18.2.17",
+    "@vitejs/plugin-react": "^4.3.1",
+    "concurrently": "^9.0.1",
+    "cross-env": "^7.0.3",
+    "eslint": "^8.57.1",
+    "nodemon": "^3.1.7",
+    "vite": "^5.4.8",
+    "vite-plugin-eslint": "^1.8.1"
+  }
+}
