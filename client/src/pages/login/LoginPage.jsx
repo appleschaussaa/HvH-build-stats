@@ -1,37 +1,74 @@
 import React, { useState } from "react";
-// import axios from "axios";
+import { useNavigate, Link } from "react-router-dom";
+import {
+    TextField,
+    Button,
+    Typography,
+    Container,
+} from "@mui/material";
+import Grid from "@mui/material/Grid2";
 
 const LoginPage = () => {
-  // const [username, setUsername] = useState("");
-  // const [password, setPassword] = useState("");
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
-  // const handleLogin = () => {
-  //   axios.post("/api/auth/login", { username, password })
-  //     .then(response => {
-  //       // Handle successful login
-  //       console.log("Login successful:", response.data);
-  //     })
-  //     .catch(error => console.error("Error logging in:", error));
-  // };
+    const handleLogin = (event) => {
+        event.preventDefault();
+        console.log("Username:", username);
+        console.log("Password:", password);
+        navigate("/dashboard");
+    };
 
-  return (
-    <div>
-      {/* <h1>Login</h1>
-      <input
-        type="text"
-        placeholder="Username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button onClick={handleLogin}>Login</button> */}
-    </div>
-  );
+    return (
+        <Container maxWidth="sm">
+            <Grid container spacing={2} direction="column" alignItems="center" justifyContent="center" style={{ minHeight: '100vh' }}>
+                <Grid xs={12}>
+                    <Typography variant="h4">Login</Typography>
+                </Grid>
+                <Grid xs={12}>
+                    <TextField
+                        label="Username"
+                        variant="outlined"
+                        fullWidth
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                    />
+                </Grid>
+                <Grid xs={12}>
+                    <TextField
+                        label="Password"
+                        type="password"
+                        variant="outlined"
+                        fullWidth
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                </Grid>
+                <Grid xs={12}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        fullWidth
+                        onClick={handleLogin}
+                    >
+                        Login
+                    </Button>
+                </Grid>
+                <Grid xs={12}>
+                    <Button
+                        component={Link}
+                        to="/"
+                        variant="outlined"
+                        color="secondary"
+                        fullWidth
+                    >
+                        Back to Home
+                    </Button>
+                </Grid>
+            </Grid>
+        </Container>
+    );
 };
 
 export default LoginPage;

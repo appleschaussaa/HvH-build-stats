@@ -1,46 +1,49 @@
-const heroes = require('../db/heroData');
+const { UserInputError } = require('@apollo/server');
+const { Hero, Build } = require('../models');
 
 const resolvers = {
   Query: {
-    heroes: () => heroes,
-    hero: (_, { id }) => heroes.find(hero => hero.id === id),
+    heroes: async () => await Hero.find(),
+    hero: async (_, { id }) => await Hero.findById(id),
+    userBuilds: async () => await Build.find().populate('hero'), // Fetch all builds with associated heroes
   },
   Mutation: {
-    addHero: (_, { name, level, health, attack, defense, image, comments }) => {
-      const newHero = {
-        id: String(heroes.length + 1),
-        name,
-        level,
-        health,
-        attack,
-        defense,
-        image,
-        comments,
-      };
-      heroes.push(newHero);
-      return newHero;
+    addHero: async (_, { name, level, health, attack, defense, image, comments }) => {
+      const newHero = new Hero({ name, level, health, attack, defense, image, comments });
+      return await newHero.save();
     },
-    updateHero: (_, { id, name, level, health, attack, defense, image, comments }) => {
-      const heroIndex = heroes.findIndex(hero => hero.id === id);
-      if (heroIndex === -1) throw new Error('Hero not found');
-      const updatedHero = {
-        ...heroes[heroIndex],
-        name: name !== undefined ? name : heroes[heroIndex].name,
-        level: level !== undefined ? level : heroes[heroIndex].level,
-        health: health !== undefined ? health : heroes[heroIndex].health,
-        attack: attack !== undefined ? attack : heroes[heroIndex].attack,
-        defense: defense !== undefined ? defense : heroes[heroIndex].defense,
-        image: image !== undefined ? image : heroes[heroIndex].image,
-        comments: comments !== undefined ? comments : heroes[heroIndex].comments,
-      };
-      heroes[heroIndex] = updatedHero;
-      return updatedHero;
+    updateHero: async (_, { id, name, level, health, attack, defense, image, comments }) => {
+      const hero = await Hero.findById(id);
+      if (!hero) throw new UserInputError('Hero not found');
+      Object.assign(hero, { name, level, health, attack, defense, image, comments });
+      return await hero.save();
     },
-    deleteHero: (_, { id }) => {
-      const heroIndex = heroes.findIndex(hero => hero.id === id);
-      if (heroIndex === -1) throw new Error('Hero not found');
-      const deletedHero = heroes.splice(heroIndex, 1);
-      return deletedHero[0];
+    deleteHero: async (_, { id }) => {
+      const hero = await Hero.findById(id);
+      if (!hero) throw new UserInputError('Hero not found');
+      await hero.remove();
+      return hero;
+    },
+    addBuild: async (_, { build }) => {
+      const { heroId, buildName, level, health, attack, defense } = build;
+      const hero = await Hero.findById(heroId);
+      if (!hero) throw new UserInputError('Hero not found');
+
+      const newBuild = new Build({ heroId, buildName, level, health, attack, defense });
+      return await newBuild.save();
+    },
+    updateBuild: async (_, { id, build }) => {
+      const existingBuild = await Build.findById(id);
+      if (!existingBuild) throw new UserInputError('Build not found');
+
+      Object.assign(existingBuild, build);
+      return await existingBuild.save();
+    },
+    deleteBuild: async (_, { id }) => {
+      const build = await Build.findById(id);
+ if (!build) throw new UserInputError('Build not found');
+      await build.remove();
+      return build;
     },
   },
 };

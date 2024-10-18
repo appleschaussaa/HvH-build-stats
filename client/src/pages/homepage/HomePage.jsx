@@ -7,7 +7,9 @@ import {
     MenuItem,
     FormControl,
     InputLabel,
+    Button,
 } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const GET_HEROES = gql`
     query GetHeroes {
@@ -55,6 +57,7 @@ const HomePage = () => {
 
     console.log("Selected Hero ID:", selectedHeroId);
     console.log("Hero Data:", dataHero);
+    console.log("Heroes Data:", dataHeroes); // Log the heroes data
 
     const defaultHero = {
         name: "Unknown Hero",
@@ -83,20 +86,44 @@ const HomePage = () => {
     ];
 
     return (
-        <Grid container spacing={8}>
-            <Grid size={{ xs: 12, lg: 12 }}>
-                <Typography variant="h2">
-                    Game Heroes
-                </Typography>
+        <Grid container spacing={8} sx={{ bgcolor: "gray", height: "100dvh" }}>
+            <Grid size={{ xs: 12, lg: 6 }}>
+                <Typography variant="h2">Game Heroes</Typography>
+            </Grid>
+            <Grid container size={{ xs: 12, lg: 6 }} spacing={2}>
+                <Grid size={{ xs: 6, lg: 3 }}>
+                    <Button
+                        component={Link}
+                        to="/login"
+                        variant="contained"
+                        color="primary"
+                        fullWidth
+                    >
+                        Login
+                    </Button>
+                </Grid>
+                <Grid size={{ xs: 6, lg: 3 }}>
+                    <Button
+                        component={Link}
+                        to="/dashboard"
+                        variant="contained"
+                        color="secondary"
+                        fullWidth
+                    >
+                        Dashboard
+                    </Button>
+                </Grid>
             </Grid>
             <Grid size={{ xs: 12, lg: 3 }} offset={0.5}>
                 {loadingHeroes && <Typography>Loading heroes...</Typography>}
                 {errorHeroes && (
                     <Typography>Error: {errorHeroes.message}</Typography>
                 )}
-                {dataHeroes && (
+                {dataHeroes && dataHeroes.heroes.length > 0 ? (
                     <FormControl fullWidth>
-                        <InputLabel id="hero-select-label">Select Hero</InputLabel>
+                        <InputLabel id="hero-select-label">
+                            Select Hero
+                        </InputLabel>
                         <Select
                             labelId="hero-select-label"
                             value={selectedHeroId}
@@ -109,6 +136,8 @@ const HomePage = () => {
                             ))}
                         </Select>
                     </FormControl>
+                ) : (
+                    <Typography>No heroes available</Typography>
                 )}
             </Grid>
             {selectedHeroId && (
@@ -121,10 +150,14 @@ const HomePage = () => {
                     )}
                     {dataHero && (
                         <Grid container spacing={2}>
-                            <Grid size={{ xs: 12, lg: 4 }}>
-                                <img src={hero.image} alt={hero.name} style={{ width: '100px', height: '100px' }} />
+                            <Grid size={{ xs: 12, sm: 4 }}>
+                                <img
+                                    src={hero.image}
+                                    alt={hero.name}
+                                    style={{ width: "100px", height: "100px" }}
+                                />
                             </Grid>
-                            <Grid size={{ xs: 12, lg: 8 }}>
+                            <Grid size={{ xs: 12, sm: 8 }}>
                                 <Typography variant="h6">
                                     {hero.name}
                                 </Typography>
