@@ -7,19 +7,16 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      '@': resolve(__dirname, 'client/src'),
+      '@': resolve(__dirname, 'src'),
     },
   },
-  optimizeDeps: {
-    include: ['react', 'react-dom', 'react/jsx-runtime', 'react/jsx-dev-runtime'],
-  },
   build: {
-    outDir: 'client/dist',
+    outDir: 'dist', // Ensure the build output directory is set correctly
   },
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:3000',
+        target: 'http://localhost:3000', // Proxy API requests to server
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
