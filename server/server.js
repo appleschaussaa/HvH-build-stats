@@ -22,7 +22,6 @@ async function startServer() {
     await server.start();
     app.use('/graphql', express.json(), expressMiddleware(server));
 
-    const PORT = process.env.PORT || 8000;
     const mongoUri = process.env.MONGODB_URI;
 
     if (!mongoUri) {
@@ -36,8 +35,8 @@ async function startServer() {
 
     await populateDatabase();
 
-    app.listen(PORT, () => {
-      console.log(`🚀 Server ready at http://localhost:${PORT}/graphql`);
+    app.listen(3000, () => {
+      console.log(`🚀 Server ready at http://localhost:3000/graphql`);
     });
   } catch (err) {
     console.error('Failed to start server', err);
@@ -46,3 +45,5 @@ async function startServer() {
 }
 
 startServer();
+
+module.exports = app;
