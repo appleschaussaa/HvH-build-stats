@@ -7,11 +7,11 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      '@': resolve(__dirname, 'src'),
+      '@': resolve(__dirname, 'client/src'),
     },
   },
   build: {
-    outDir: 'dist', // Ensure the build output directory is set correctly
+    outDir: 'clent/dist', // Ensure the build output directory is set correctly
   },
   server: {
     proxy: {
